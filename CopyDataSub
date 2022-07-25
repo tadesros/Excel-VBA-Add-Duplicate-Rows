@@ -1,0 +1,38 @@
+Sub CopyData()
+'Updateby Extendoffice
+    'Long to keep track of Row
+    Dim xRow As Long
+    'Insert Number This is the value in the J column for this example
+    Dim VInSertNum As Variant
+    'Starting Row make it 4 to skip empty header
+    xRow = 4
+    'Turn screen updating to false
+    Application.ScreenUpdating = False
+'Enter Do while loop until a is empty
+    Do While (Cells(xRow, "A") <> "")
+        'Get value of Column J (how many to insert)
+         VInSertNum = Cells(xRow, "J")
+         
+        'Check if J is greater than 1 and is numeric
+        If ((VInSertNum > 1) And IsNumeric(VInSertNum)) Then
+           Range(Cells(xRow, "A"), Cells(xRow, "J")).Copy
+           'Set the range for the paste
+           Range(Cells(xRow + 1, "A"), Cells(xRow + VInSertNum - 1, "J")).Select
+           'Paste the entire range
+           Selection.Insert Shift:=xlDown
+           'Adjust xRow so that it now represents the next line with the added lines (add in J value)
+           'Want xRow to look at the next row. Add in the J value to adjust
+           xRow = xRow + VInSertNum - 1
+        End If
+        
+        'Add a line below
+         Range(Cells(xRow, "A"), Cells(xRow, "J")).Borders(xlEdgeBottom).LineStyle = XlLineStyle.xlContinuous
+         
+         
+        'Increment xRow to adjust so it goes to next row
+        xRow = xRow + 1
+        
+    Loop
+'Turn Screen Updating back on
+    Application.ScreenUpdating = False
+End Sub
